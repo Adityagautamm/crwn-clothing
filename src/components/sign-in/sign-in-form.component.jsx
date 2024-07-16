@@ -1,52 +1,48 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import {
   signInWithGooglePopup,
   createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
- import './sign-in-form.styles.scss'
- import '../button/button.styles.scss'
+import "./sign-in-form.styles.scss";
+import "../button/button.styles.scss";
 import Button from "../button/button.component";
-import { UserContext } from "../../context/user.context";
 
 const defaultFormFields = {
-
   email: "",
   password: "",
-
 };
 
 const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const {  email, password,  } = formFields;
-const {setCurrentUser} = useContext(UserContext)
+  const { email, password } = formFields;
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
 
   const signInWithGoogle = async () => {
     const { user } = await signInWithGooglePopup();
-  await createUserDocumentFromAuth();
+    //setCurrentUser(user);
+    // await createUserDocumentFromAuth(user);
     console.log(user);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-const {user}= await signInAuthUserWithEmailAndPassword();
-setCurrentUser(user);
-console.log ('user from sign in with email and pass', user)
+    const { user } = await signInAuthUserWithEmailAndPassword(email, password);
+    //setCurrentUser(user);
+    console.log("user from sign in with email and pass", user);
 
     try {
-
       resetFormFields();
     } catch (error) {
       switch (error.code) {
-        case 'auth/wrong-password':
-          alert('incorrect password for email');
+        case "auth/wrong-password":
+          alert("incorrect password for email");
           break;
-        case 'auth/user-not-found':
-          alert('no user associated with this email');
+        case "auth/user-not-found":
+          alert("no user associated with this email");
           break;
         default:
           console.log(error);
@@ -64,8 +60,6 @@ console.log ('user from sign in with email and pass', user)
       <h2>Already have an account</h2>
       <span>Sign in with email & passowrd</span>
       <form onSubmit={handleSubmit}>
-
-
         <FormInput
           label="Email"
           type="email"
@@ -84,8 +78,10 @@ console.log ('user from sign in with email and pass', user)
           onChange={handleChange}
         />
         <div className="buttons-container">
-        <Button  type="submit">Sign In</Button>
-        <Button type='button' onClick={signInWithGoogle} buttonType='google'>Google sign in</Button>
+          <Button type="submit">Sign In</Button>
+          <Button type="button" onClick={signInWithGoogle} buttonType="google">
+            Google sign in
+          </Button>
         </div>
       </form>
     </div>

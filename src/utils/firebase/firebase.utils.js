@@ -4,9 +4,10 @@ import {
   GoogleAuthProvider,
   getAuth,
   signInWithPopup,
-  signInWithRedirect,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -31,6 +32,7 @@ const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: "select_account" });
 
 export const auth = getAuth();
+console.log("This is Auth", auth);
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const db = getFirestore();
@@ -67,8 +69,15 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
-
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   return await signInWithEmailAndPassword(auth, email, password);
 };
+
+export const signOutUser = async () => {
+  console.log("This is Auth", auth);
+  await signOut(auth);
+};
+
+export const onAuthStateChangedListner = (callback) =>
+  onAuthStateChanged(auth, callback);
