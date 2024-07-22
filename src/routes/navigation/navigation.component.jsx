@@ -10,9 +10,7 @@ import { CartContext } from "../../context/cart.context";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 const Navigation = () => {
   const { currentUser } = useContext(UserContext);
-  const {isCartOpen, setIsCartOpen}  = useContext(CartContext);
-
-  console.log("current user from context", currentUser);
+  const { isCartOpen, setIsCartOpen } = useContext(CartContext);
 
   return (
     <Fragment>
@@ -33,9 +31,9 @@ const Navigation = () => {
               Sign In
             </Link>
           )}
-          <CartIcon/>
+          <CartIcon />
         </div>
-        { isCartOpen && <CartDropdown/> }
+        {isCartOpen && <CartDropdown />}
       </div>
       <Outlet />
     </Fragment>

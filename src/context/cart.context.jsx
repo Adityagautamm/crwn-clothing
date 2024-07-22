@@ -17,28 +17,30 @@ export const addCartItem = (cartItems, productToAdd) => {
   return [...cartItems, { ...productToAdd, quantity: 1 }];
 };
 
-// export const MinusQuantity = (cartItems, productToAdd) => {
-//   const existingCartItem = cartItems.find(
-//     (cartItem) => cartItem.id === productToAdd.id
-//   );
+export const removeCartItem = (cartItems, cartItemToRemove) => {
+  const existingCartItem = cartItems.find(
+    (cartItem) => cartItem.id === cartItemToRemove.id
+  );
+  console.log("existing item quantity", existingCartItem.quantity);
+  console.log("remove item quantity", cartItemToRemove.quantity);
+  if (existingCartItem.quantity === 1) {
+    return cartItems.filter((cartItem) => cartItem.id !== cartItemToRemove.id);
+  }
 
-//   if (existingCartItem) {
-//     return cartItems.map((cartItem) =>
-//       cartItem.id === productToAdd.id
-//         ? { ...cartItem, quantity: cartItem.quantity - 1 }
-//         : cartItem
-//     );
-//   }
+  return cartItems.map((cartItem) =>
+    cartItem.id === cartItemToRemove.id
+      ? { ...cartItem, quantity: cartItem.quantity - 1 }
+      : cartItem
+  );
+};
 
-//   return cartItems.filter((cartItem) => cartItem.id !== productToAdd.id);
-// };
 export const CartContext = createContext({
   isCartOpen: false,
   setIsOpen: () => {},
   cartItems: [],
   addItemToCart: () => {},
   cartItemCount: 0,
-  //  MinusItemToCart: () => {},
+  RemoveItemFromCart: () => {},
 });
 
 export const CartProvider = ({ children }) => {
@@ -60,8 +62,8 @@ export const CartProvider = ({ children }) => {
   const addItemToCart = (product) =>
     setCartItems(addCartItem(cartItems, product));
 
-  // const MinusItemToCart = (product) =>
-  //   setCartItems(MinusQuantity(cartItems, product));
+  const RemoveItemFromCart = (cartItemToRemove) =>
+    setCartItems(removeCartItem(cartItems, cartItemToRemove));
 
   const value = {
     isCartOpen,
@@ -69,7 +71,7 @@ export const CartProvider = ({ children }) => {
     cartItems,
     addItemToCart,
     cartItemCount,
-    //  MinusItemToCart,
+    RemoveItemFromCart,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
