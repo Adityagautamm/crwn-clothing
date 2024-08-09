@@ -1,8 +1,11 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer } from 'react';
+
+import { createAction } from '../utils/reducer/reducer.util';
+
 import {
+  onAuthStateChangedListener,
   createUserDocumentFromAuth,
-  onAuthStateChangedListner,
-} from "../utils/firebase/firebase.utils";
+} from '../utils/firebase/firebase.utils';
 
 export const UserContext = createContext({
   setCurrentUser: () => null,
@@ -10,12 +13,14 @@ export const UserContext = createContext({
 });
 
 export const USER_ACTION_TYPES = {
-  SET_CURRENT_USER: "SET_CURRENT_USER",
+  SET_CURRENT_USER: 'SET_CURRENT_USER',
+};
+
+const INITIAL_STATE = {
+  currentUser: null,
 };
 
 const userReducer = (state, action) => {
-  console.log("dispatched");
-  console.log(action);
   const { type, payload } = action;
 
   switch (type) {
@@ -25,23 +30,15 @@ const userReducer = (state, action) => {
       throw new Error(`Unhandled type ${type} in userReducer`);
   }
 };
-const INITIAL_STATE = {
-  currentUser: null,
-};
 
 export const UserProvider = ({ children }) => {
-  // const [currentUser, setCurrentUser] = useState(null);
-  const [{ currentUser }, disptach] = useReducer(userReducer, INITIAL_STATE);
-  console.log(currentUser);
+  const [{ currentUser }, dispatch] = useReducer(userReducer, INITIAL_STATE);
 
-  const setCurrentUser = (user) => {
-    disptach({ type: "SET_CURRENT_USER", payload: user });
-  };
-
-  const value = { currentUser, setCurrentUser };
+  const setCurrentUser = (user) =>
+    dispatch(createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user));
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListner((user) => {
+    const unsubscribe = onAuthStateChangedListener((user) => {
       if (user) {
         createUserDocumentFromAuth(user);
       }
@@ -50,6 +47,12 @@ export const UserProvider = ({ children }) => {
 
     return unsubscribe;
   }, []);
+
+  console.log(currentUser);
+
+  const value = {
+    currentUser,
+  };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
