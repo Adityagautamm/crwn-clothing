@@ -13,9 +13,11 @@ import {
 } from "../../store/cart/cart.selector";
 import "./checkout-item.styles.scss";
 
+
 const CheckoutItem = ({ cartItem }) => {
   const { name, imageUrl, price, quantity } = cartItem;
   const cartItems = useSelector(selectCartItems);
+  const cartTotal = useSelector(selectCartTotal)
   const dispatch = useDispatch();
 
   // const { clearItemFromCart, addItemToCart, removeItemFromCart } =
