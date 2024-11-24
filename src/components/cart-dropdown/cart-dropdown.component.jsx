@@ -17,12 +17,11 @@ const CartDropdown = () => {
   const goToCheckout = () => {
     navigate("/checkout");
   };
-  console.log('cart ki items')
+  console.log("cart ki items");
   return (
-
-     <div className="cart-dropdown-container">
-       <div className="cart-items">
-         {cartItems.map((item) => (
+    <div className="cart-dropdown-container">
+      <div className="cart-items">
+        {cartItems.map((item) => (
           <CartItem key={item.id} cartItem={item} />
         ))}
       </div>
