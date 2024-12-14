@@ -5,6 +5,7 @@ import { CardElement } from "@stripe/react-stripe-js";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import { selectCartTotal } from "../../store/cart/cart.selector";
 import { selectCurrentUser } from "../../store/user/user.selector";
+import "./payment-form.styles.scss";
 
 const PaymentForm = () => {
   const stripe = useStripe();
@@ -61,7 +62,22 @@ const PaymentForm = () => {
     <div className="paymentFormContainer">
       <form className="formContainer" onSubmit={paymentHandler}>
         <h2>Credit Card Payment:</h2>
-        <CardElement />
+        <CardElement
+          options={{
+            style: {
+              base: {
+                fontSize: "16px",
+                color: "#424770",
+                "::placeholder": {
+                  color: "#aab7c4",
+                },
+              },
+              invalid: {
+                color: "#9e2146",
+              },
+            },
+          }}
+        />
         <Button
           isLoading={isProcessingPayment}
           class
