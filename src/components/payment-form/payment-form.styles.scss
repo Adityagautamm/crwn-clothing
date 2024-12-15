@@ -24,3 +24,30 @@
   border-radius: 5px;
   font-size: 16px;
 }
+
+.payNow {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #5cb85c;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.payNow:hover {
+  background-color: #4cae4c;
+}
+
+.payNow:active {
+  background-color: #449d44;
+}
+
+.payNow:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

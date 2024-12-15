@@ -78,13 +78,16 @@ const PaymentForm = () => {
             },
           }}
         />
-        <Button
+        <button className="payNow" type="submit">
+          Pay now
+        </button>
+        {/* <Button
           isLoading={isProcessingPayment}
           class
           buttonType={BUTTON_TYPE_CLASSES.inverted}
         >
           Pay now
-        </Button>
+        </Button> */}
       </form>
     </div>
   );
